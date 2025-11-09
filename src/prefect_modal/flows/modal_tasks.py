@@ -8,4 +8,4 @@ def modal_task(param: str):
     import requests
     print("Running inside Modal")
     print("Param received:", param)
-    return f"Successfully fetched {requests.get(''.join(['https://', param])).status_code}"
+    print(f"Successfully fetched {requests.get(''.join(['https://', param])).status_code}")

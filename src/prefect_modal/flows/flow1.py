@@ -1,10 +1,10 @@
 from prefect import flow, task
 import modal
 
-stub = modal.Stub("prefect-modal-example")
+app = modal.App("prefect-modal-example")
 image = modal.Image.debian_slim().pip_install("request")
 
-@stub.function(image=image)
+@app.function(image=image)
 def modal_task(param: str):
     import requests
     print("Running inside Modal")
@@ -13,7 +13,7 @@ def modal_task(param: str):
 
 @task
 def trigger_modal(param: str):
-    with stub.run():
+    with app.run():
         modal_task.remote(param)
 
 @task

@@ -3,10 +3,11 @@ from .modal_tasks import app, modal_task
 
 @task
 def trigger_modal(param: str):
-    # Run the modal function remotely
+    # Trigger modal function without waiting (fire-and-forget)
     with app.run():
-        result = modal_task.remote(param)
-        print(f"Modal task result: {result}")
+        function_call = modal_task.spawn(param)
+        print(f"Modal task triggered with ID: {function_call.object_id}")
+        print("Prefect will not wait for Modal to complete")
 
 @task
 def get_website_url(param: str) -> str:
@@ -16,8 +17,11 @@ def get_website_url(param: str) -> str:
 
 @flow(log_prints=True)
 def main(name: str = "dimgi", goodbye: bool = False):
-    print(f"Scrapping {name} from Prefect! 🤗")
-    url = get_website_url(name)
-    trigger_modal(url)
     if goodbye:
         print(f"Goodbye {name}!")
+    print(f"Scrapping {name} from Prefect! 🤗")
+
+    # First Job
+    url = get_website_url(name)
+    # Second Job
+    trigger_modal(url)

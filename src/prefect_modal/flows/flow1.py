@@ -1,20 +1,12 @@
 from prefect import flow, task
-import modal
-
-app = modal.App("prefect-modal-example")
-image = modal.Image.debian_slim().pip_install("requests")
-
-@app.function(image=image)
-def modal_task(param: str):
-    import requests
-    print("Running inside Modal")
-    print("Param received:", param)
-    print("Status from dimgi.com:", requests.get("".join(["https://", param])).status_code)
+from .modal_tasks import app, modal_task
 
 @task
 def trigger_modal(param: str):
+    # Run the modal function remotely
     with app.run():
-        modal_task.remote(param)
+        result = modal_task.remote(param)
+        print(f"Modal task result: {result}")
 
 @task
 def get_website_url(param: str) -> str:

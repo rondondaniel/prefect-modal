@@ -2,7 +2,7 @@ from prefect import flow, task
 import modal
 
 app = modal.App("prefect-modal-example")
-image = modal.Image.debian_slim().pip_install("request")
+image = modal.Image.debian_slim().pip_install("requests")
 
 @app.function(image=image)
 def modal_task(param: str):

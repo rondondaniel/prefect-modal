@@ -1,4 +1,5 @@
 import modal
+import time
 
 app = modal.App("prefect-modal-example")
 image = modal.Image.debian_slim().pip_install("requests")
@@ -9,3 +10,4 @@ def modal_task(param: str):
     print("Running inside Modal")
     print("Param received:", param)
     print(f"Successfully fetched {requests.get(''.join(['https://', param])).status_code}")
+    time.sleep(300)

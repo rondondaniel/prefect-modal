@@ -28,16 +28,18 @@ pull:
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
-- name: prefect-modal-example
-  description: "Example deployment running flow1.py daily at 12:00"
+- name: prefect-modal-test
+  description: "Example to spinup flow1.py into a modal instance"
   entrypoint: src/prefect_modal/flows/flow1.py:main
-  schedules:
-  - cron: '0 12 * * *'
-    timezone: America/New_York
-    active: true
+  # schedules:
+  # - cron: '0 12 * * *'
+  #   timezone: America/New_York
+  #   active: true
   work_pool:
     name: "serverless"
     work_queue_name: "default"
     job_variables:
       env:
         UV_PROJECT_ENVIRONMENT: "/usr/local"
+        MODAL_TOKEN_ID: "{{ prefect.blocks.modal-credentials.pref-modal-pool-modal-credentials.token_id }}"
+        MODAL_TOKEN_SECRET: "{{ prefect.blocks.modal-credentials.pref-modal-pool-modal-credentials.token_secret }}"

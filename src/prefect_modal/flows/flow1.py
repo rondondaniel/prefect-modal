@@ -4,7 +4,7 @@ import modal
 @task
 def trigger_modal(param: str):
     # Trigger modal function without waiting (fire-and-forget)
-        modal_task = modal.Function.from_name("prefect-modal-example", "train_model")
+        modal_task = modal.Function.from_name("prefect-modal-example", "modal_task")
         function_call = modal_task.spawn(param)
         print(f"Modal task triggered with ID: {function_call.object_id}")
         print("Prefect will not wait for Modal to complete")
